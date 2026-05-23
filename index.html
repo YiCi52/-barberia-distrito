@@ -203,58 +203,103 @@
   @media (min-width: 880px) {
     .hero-art { height: 460px; }
   }
+  /* ===== Barber Pole rediseñado ===== */
   .pole {
     position: relative;
-    width: 80px;
+    width: 90px;
     height: 100%;
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow:
-      0 25px 70px rgba(0,0,0,0.65),
-      inset 0 0 0 2px rgba(255,255,255,0.06);
-    /* tapas metálicas arriba y abajo */
+    display: flex;
+    flex-direction: column;
+    filter: drop-shadow(0 25px 35px rgba(0,0,0,0.55));
+  }
+  .pole-cap {
+    position: relative;
+    height: 8%;
     background:
       linear-gradient(180deg,
-        #c9c9c9 0%, #6a6a6a 2.5%, #1a1a1a 6%,
-        transparent 6%, transparent 94%,
-        #1a1a1a 94%, #6a6a6a 97.5%, #c9c9c9 100%);
+        #d9b475 0%, #b7935a 18%, #f4d99a 35%,
+        #8d6c3f 55%, #5a3f1d 80%, #3a2710 100%);
+    border-radius: 6px 6px 4px 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      inset 0 -2px 4px rgba(0,0,0,0.5),
+      0 2px 4px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    z-index: 3;
   }
-  .pole-stripes {
-    position: absolute;
-    top: 6%;
-    bottom: 6%;
-    left: -25%;
-    right: -25%;
-    background: repeating-linear-gradient(
-      to bottom,
-      #f4efe6 0 18px,
-      #c0392b 18px 36px,
-      #f4efe6 36px 54px,
-      #1a3a8f 54px 72px
-    );
-    transform: rotate(20deg) scaleY(1.6);
-    animation: barber-roll 2s linear infinite;
-    will-change: background-position;
-  }
-  /* sombreado cilíndrico para dar volumen al palo */
-  .pole-stripes::after {
+  .pole-cap.bottom { border-radius: 4px 4px 6px 6px; }
+  /* tornillitos en las tapas */
+  .pole-cap::before, .pole-cap::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(0,0,0,0.55) 0%,
-      rgba(0,0,0,0) 30%,
-      rgba(255,255,255,0.12) 50%,
-      rgba(0,0,0,0) 70%,
-      rgba(0,0,0,0.55) 100%
-    );
-    pointer-events: none;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #f4d99a, #5a3f1d 80%);
+    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.4);
+    transform: translateY(-50%);
   }
-  /* la magia: animar background-position por exactamente UN período (72px = 18*4) */
+  .pole-cap::before { left: 14%; }
+  .pole-cap::after  { right: 14%; }
+
+  .pole-body {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    /* cilindro de vidrio: gradiente lateral para volumen */
+    background:
+      linear-gradient(90deg,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0) 25%,
+        rgba(255,255,255,0.08) 50%,
+        rgba(0,0,0,0) 75%,
+        rgba(0,0,0,0.55) 100%),
+      #0a0a0a;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.05),
+      inset 6px 0 14px rgba(0,0,0,0.6),
+      inset -6px 0 14px rgba(0,0,0,0.6);
+  }
+
+  .pole-stripes {
+    position: absolute;
+    top: -15%;
+    bottom: -15%;
+    left: -40%;
+    right: -40%;
+    background: repeating-linear-gradient(
+      to bottom,
+      #f4efe6 0 14px,
+      #c0392b 14px 28px,
+      #f4efe6 28px 42px,
+      #1a3a8f 42px 56px
+    );
+    transform: rotate(22deg);
+    animation: barber-roll 1.8s linear infinite;
+    will-change: background-position;
+  }
+  /* Loop perfecto: el período del patrón es 56px en y. */
   @keyframes barber-roll {
-    from { background-position: 0 0; }
-    to   { background-position: 0 72px; }
+    from { background-position: 0 56px; }
+    to   { background-position: 0 0; }
+  }
+
+  /* Brillo de vidrio sobre las rayas (luz reflejada del frente) */
+  .pole-shine {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg,
+        rgba(0,0,0,0.45) 0%,
+        rgba(0,0,0,0.1) 18%,
+        rgba(255,255,255,0.15) 38%,
+        rgba(255,255,255,0.22) 50%,
+        rgba(255,255,255,0.15) 62%,
+        rgba(0,0,0,0.1) 82%,
+        rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+    mix-blend-mode: overlay;
   }
   .hero-circle {
     position: absolute;
@@ -547,6 +592,76 @@
     to { background-position-x: -200%; }
   }
 
+  /* ---------- TEAM ---------- */
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 640px) {
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .barber {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform .25s, border-color .25s;
+  }
+  .barber:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .barber-photo {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: #111;
+    overflow: hidden;
+  }
+  .barber-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) contrast(1.05);
+    transition: transform .5s;
+  }
+  .barber:hover .barber-photo img { transform: scale(1.05); }
+  .barber-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.85) 100%);
+  }
+  .barber-info {
+    padding: 20px;
+  }
+  .barber-info h3 {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+  .barber-info .role {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .barber-info p {
+    color: var(--ink-dim);
+    font-size: 13px;
+  }
+  .barber-tags {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .barber-tags span {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(201,163,92,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(201,163,92,0.3);
+  }
+
   /* ---------- MAP ---------- */
   .map-wrap {
     margin-top: 18px;
@@ -562,6 +677,183 @@
     border: 0;
     filter: invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.95);
   }
+
+  /* ---------- PAYMENT SECURITY ---------- */
+  .pay {
+    background: var(--bg-soft);
+    position: relative;
+  }
+  .pay-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .pay-grid { grid-template-columns: 1.1fr 1fr; gap: 50px; }
+  }
+  .pay-shield {
+    position: relative;
+    background: linear-gradient(160deg, #1c1c1c 0%, #141414 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 40px 30px;
+    text-align: center;
+  }
+  .shield-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(201,163,92,0.25), rgba(201,163,92,0.05));
+    border: 1px solid var(--gold);
+    display: grid;
+    place-items: center;
+    color: var(--gold);
+    position: relative;
+  }
+  .shield-icon::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px dashed rgba(201,163,92,0.3);
+    animation: rotate 20s linear infinite;
+  }
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
+  }
+  .pay-level {
+    margin-top: 28px;
+  }
+  .pay-level-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pay-level-bar {
+    height: 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .pay-level-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--gold), var(--gold-strong));
+    border-radius: 3px;
+    transition: width 1.5s ease-out;
+    box-shadow: 0 0 14px rgba(201,163,92,0.6);
+  }
+  .pay-level-fill.animate { width: 100%; }
+  .pay-level-value {
+    margin-top: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .pay-checks {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .pay-check {
+    display: flex;
+    gap: 16px;
+    padding: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: border-color .2s;
+  }
+  .pay-check:hover { border-color: rgba(201,163,92,0.4); }
+  .pay-check-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(201,163,92,0.1);
+    display: grid;
+    place-items: center;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .pay-check h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0;
+  }
+  .pay-check p {
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+
+  .pay-methods {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .pay-methods-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .pay-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .pay-badge {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s;
+  }
+  .pay-badge:hover {
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .pay-badge.visa { color: #1a1f71; background: #fff; border-color: #fff; }
+  .pay-badge.mc { color: #fff; background: linear-gradient(90deg,#eb001b,#f79e1b); border: none; }
+  .pay-badge.amex { color: #fff; background: #006fcf; border: none; }
+  .pay-badge.nequi { color: #fff; background: #ff006e; border: none; }
+  .pay-badge.daviplata { color: #fff; background: #ed1c27; border: none; }
+  .pay-badge.pse { color: #fff; background: #0046ab; border: none; }
+
+  .pay-note {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: rgba(201,163,92,0.08);
+    border: 1px solid rgba(201,163,92,0.25);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-dim);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .pay-note svg { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
 
   /* ---------- NEWSLETTER ---------- */
   .newsletter {
@@ -729,9 +1021,9 @@
     </a>
     <nav class="nav-links">
       <a href="#servicios">Servicios</a>
-      <a href="#galeria">Galería</a>
-      <a href="#agendar">Ubicación</a>
-      <a href="#club">Club Distrito</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#agendar">Agendar</a>
+      <a href="#pagos">Pagos</a>
     </nav>
     <a href="#agendar" class="nav-cta">Agendar</a>
   </div>
@@ -758,7 +1050,14 @@
     <div class="hero-art" aria-hidden="true">
       <div class="hero-circle lg"></div>
       <div class="hero-circle"></div>
-      <div class="pole"><div class="pole-stripes"></div></div>
+      <div class="pole">
+        <div class="pole-cap top"></div>
+        <div class="pole-body">
+          <div class="pole-stripes"></div>
+          <div class="pole-shine"></div>
+        </div>
+        <div class="pole-cap bottom"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -941,6 +1240,65 @@
   </div>
 </section>
 
+<!-- EQUIPO -->
+<section id="equipo" class="services" style="background: var(--bg);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">El equipo</span>
+      <h2>Manos de confianza</h2>
+      <p>Tres barberos con estilos distintos. Elegí el tuyo o dejá que te asignemos uno.</p>
+    </div>
+    <div class="team-grid">
+
+      <div class="barber">
+        <div class="barber-photo">
+          <img loading="lazy" alt="Andrés, barbero senior"
+               src="https://image.pollinations.ai/prompt/professional%20portrait%20of%20a%20latino%20male%20barber%2C%2035%20years%20old%2C%20beard%2C%20tattoos%20on%20forearm%2C%20wearing%20black%20apron%2C%20warm%20studio%20light%2C%20moody%2C%20editorial%20photography?width=600&height=750&nologo=true&seed=101&model=flux"/>
+        </div>
+        <div class="barber-info">
+          <h3>Andrés "El Pulga"</h3>
+          <div class="role">Barbero Senior · 8 años</div>
+          <p>Especialista en cortes clásicos y degradados precisos. Lo encontrás los días impares.</p>
+          <div class="barber-tags">
+            <span>Clásicos</span><span>Fade</span><span>Barba</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="barber">
+        <div class="barber-photo">
+          <img loading="lazy" alt="Diego, barbero"
+               src="https://image.pollinations.ai/prompt/professional%20portrait%20of%20a%20young%20colombian%20male%20barber%2C%2028%20years%20old%2C%20short%20curly%20hair%2C%20wearing%20white%20shirt%20with%20rolled%20sleeves%2C%20warm%20lighting%2C%20editorial%20photography?width=600&height=750&nologo=true&seed=102&model=flux"/>
+        </div>
+        <div class="barber-info">
+          <h3>Diego Ramírez</h3>
+          <div class="role">Barbero · 5 años</div>
+          <p>Cortes modernos, texturizados y diseños. El más pedido por los pelados.</p>
+          <div class="barber-tags">
+            <span>Modernos</span><span>Diseños</span><span>Niños</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="barber">
+        <div class="barber-photo">
+          <img loading="lazy" alt="Camilo, especialista en afeitado"
+               src="https://image.pollinations.ai/prompt/professional%20portrait%20of%20a%20mature%20colombian%20male%20barber%2C%2045%20years%20old%2C%20gray%20hair%2C%20well%20groomed%20mustache%2C%20wearing%20vest%2C%20vintage%20barbershop%20background%2C%20warm%20cinematic%20lighting?width=600&height=750&nologo=true&seed=103&model=flux"/>
+        </div>
+        <div class="barber-info">
+          <h3>Camilo Ortiz</h3>
+          <div class="role">Maestro Barbero · 15 años</div>
+          <p>El veterano. Especialista en afeitado clásico a navaja y rituales de barba.</p>
+          <div class="barber-tags">
+            <span>Navaja</span><span>Ritual</span><span>Barba</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- AGENDAR -->
 <section id="agendar" class="book">
   <div class="wrap">
@@ -1040,6 +1398,141 @@
           Abrir en Google Maps
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
         </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PAGOS SEGUROS -->
+<section id="pagos" class="pay">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Pagos seguros</span>
+      <h2>Pagá tranquilo, con lo que prefieras</h2>
+      <p>Aceptamos tarjeta, billeteras digitales y efectivo. Las transacciones se procesan con encriptación bancaria.</p>
+    </div>
+
+    <div class="pay-grid">
+
+      <!-- panel de nivel de seguridad -->
+      <div class="pay-shield">
+        <div class="shield-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 style="font-size:32px;">Nivel de seguridad</h3>
+        <p style="color:var(--ink-dim); font-size:14px; margin-top:6px;">
+          Mismo estándar que usan los bancos colombianos.
+        </p>
+
+        <div class="pay-level">
+          <div class="pay-level-label">
+            <span>SSL · PCI DSS · 3D Secure</span>
+            <span>Nivel A+</span>
+          </div>
+          <div class="pay-level-bar">
+            <div class="pay-level-fill" id="payBar"></div>
+          </div>
+          <div class="pay-level-value">100% encriptado</div>
+        </div>
+
+        <div class="pay-methods">
+          <div class="pay-methods-label">Métodos aceptados</div>
+          <div class="pay-logos">
+            <span class="pay-badge visa">VISA</span>
+            <span class="pay-badge mc">MC</span>
+            <span class="pay-badge amex">AMEX</span>
+            <span class="pay-badge nequi">NEQUI</span>
+            <span class="pay-badge daviplata">DAVIPLATA</span>
+            <span class="pay-badge pse">PSE</span>
+            <span class="pay-badge">EFECTIVO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- detalles de cada capa de seguridad -->
+      <div>
+        <div class="pay-checks">
+
+          <div class="pay-check">
+            <div class="pay-check-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Encriptación SSL 256-bit</h4>
+              <p>Todos los datos viajan cifrados de extremo a extremo. Ni nosotros podemos ver tu número de tarjeta.</p>
+            </div>
+          </div>
+
+          <div class="pay-check">
+            <div class="pay-check-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Certificación PCI DSS Nivel 1</h4>
+              <p>Procesamos a través de Wompi (Bancolombia), certificado con el nivel más alto de seguridad de la industria de tarjetas.</p>
+            </div>
+          </div>
+
+          <div class="pay-check">
+            <div class="pay-check-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20M7 15h3"/>
+              </svg>
+            </div>
+            <div>
+              <h4>3D Secure 2.0</h4>
+              <p>Doble autenticación con tu banco antes de cobrar. Confirmás cada pago desde tu app del banco o por SMS.</p>
+            </div>
+          </div>
+
+          <div class="pay-check">
+            <div class="pay-check-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Tokenización de datos</h4>
+              <p>Si guardás tu tarjeta para futuras visitas, no se guarda el número — solo un token único que solo Wompi puede descifrar.</p>
+            </div>
+          </div>
+
+          <div class="pay-check">
+            <div class="pay-check-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Reembolso garantizado</h4>
+              <p>Si algo sale mal con tu pago, el reverso es automático. Sin papeleos, sin llamados.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="pay-note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4M12 8h.01"/>
+          </svg>
+          <div>
+            <strong style="color:var(--ink); display:block; margin-bottom:4px;">¿Pagás en el local?</strong>
+            La misma seguridad. Usamos datáfonos certificados con chip + PIN o contactless. Nunca tu tarjeta sale de tu mano.
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1171,6 +1664,23 @@
     btn.style.background = '#25D366';
     btn.style.color = '#fff';
   });
+
+  // ----- Animar barra de seguridad al hacer scroll -----
+  const payBar = document.getElementById('payBar');
+  if (payBar && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          payBar.classList.add('animate');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(payBar);
+  } else if (payBar) {
+    // fallback navegadores viejos
+    setTimeout(() => payBar.classList.add('animate'), 300);
+  }
 </script>
 
 </body>

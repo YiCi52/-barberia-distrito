@@ -441,71 +441,100 @@
   @media (min-width: 880px) {
     .hero-art { height: 460px; }
   }
-  /* ===== Barber Pole rediseñado ===== */
+  /* ===== Barber Pole v3 ===== */
   .pole {
     position: relative;
-    width: 90px;
+    width: 88px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    filter: drop-shadow(0 25px 35px rgba(0,0,0,0.55));
+    filter: drop-shadow(0 28px 38px rgba(0,0,0,0.7));
   }
+
+  /* Mounting bracket — el "perno" superior contra la pared */
+  .pole::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 12px;
+    background:
+      linear-gradient(180deg, #d9b475 0%, #8d6c3f 50%, #3a2710 100%);
+    border-radius: 4px 4px 0 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  /* Tapas metálicas (latón) */
   .pole-cap {
     position: relative;
-    height: 8%;
-    background:
-      linear-gradient(180deg,
-        #d9b475 0%, #b7935a 18%, #f4d99a 35%,
-        #8d6c3f 55%, #5a3f1d 80%, #3a2710 100%);
-    border-radius: 6px 6px 4px 4px;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.4),
-      inset 0 -2px 4px rgba(0,0,0,0.5),
-      0 2px 4px rgba(0,0,0,0.4);
+    height: 32px;
     flex-shrink: 0;
     z-index: 3;
+    background:
+      linear-gradient(180deg,
+        #f5d089 0%,
+        #d9b475 12%,
+        #c9a35c 28%,
+        #8d6c3f 55%,
+        #4a3318 88%,
+        #2a1d0c 100%);
+    border-radius: 6px 6px 2px 2px;
+    box-shadow:
+      inset 0 1.5px 0 rgba(255,255,255,0.5),
+      inset 0 -2px 4px rgba(0,0,0,0.4),
+      0 3px 6px rgba(0,0,0,0.5);
   }
-  .pole-cap.bottom { border-radius: 4px 4px 6px 6px; }
-  /* tornillitos en las tapas */
+  .pole-cap.bottom {
+    border-radius: 2px 2px 6px 6px;
+    background:
+      linear-gradient(180deg,
+        #2a1d0c 0%,
+        #4a3318 12%,
+        #8d6c3f 45%,
+        #c9a35c 72%,
+        #d9b475 88%,
+        #8d6c3f 100%);
+  }
+  /* Tornillos visibles en cada tapa */
   .pole-cap::before, .pole-cap::after {
     content: "";
     position: absolute;
     top: 50%;
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #f4d99a, #5a3f1d 80%);
-    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.4);
+    background: radial-gradient(circle at 30% 30%, #f5d089 0%, #8d6c3f 55%, #2a1d0c 100%);
+    box-shadow:
+      inset 0 -1px 1px rgba(0,0,0,0.5),
+      0 0 1px rgba(255,255,255,0.2);
     transform: translateY(-50%);
   }
-  .pole-cap::before { left: 14%; }
-  .pole-cap::after  { right: 14%; }
+  .pole-cap::before { left: 9px; }
+  .pole-cap::after  { right: 9px; }
 
+  /* Cuerpo del cilindro */
   .pole-body {
     position: relative;
     flex: 1;
     overflow: hidden;
-    /* cilindro de vidrio: gradiente lateral para volumen */
-    background:
-      linear-gradient(90deg,
-        rgba(0,0,0,0.55) 0%,
-        rgba(0,0,0,0) 25%,
-        rgba(255,255,255,0.08) 50%,
-        rgba(0,0,0,0) 75%,
-        rgba(0,0,0,0.55) 100%),
-      #0a0a0a;
+    background: #060606;
+    /* Sombra interna muy fuerte a los costados para look cilíndrico */
     box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.05),
-      inset 6px 0 14px rgba(0,0,0,0.6),
-      inset -6px 0 14px rgba(0,0,0,0.6);
+      inset 12px 0 22px rgba(0,0,0,0.95),
+      inset -12px 0 22px rgba(0,0,0,0.95),
+      inset 0 1px 0 rgba(0,0,0,0.8),
+      inset 0 -1px 0 rgba(0,0,0,0.8);
   }
 
+  /* Rayas — 300% wide x 200% tall: cobertura garantizada a 22° */
   .pole-stripes {
     position: absolute;
-    top: -15%;
-    bottom: -15%;
-    left: -40%;
-    right: -40%;
+    top: -50%;
+    left: -100%;
+    width: 300%;
+    height: 200%;
     background: repeating-linear-gradient(
       to bottom,
       #f4efe6 0 14px,
@@ -514,30 +543,36 @@
       #1a3a8f 42px 56px
     );
     transform: rotate(22deg);
+    transform-origin: center center;
     animation: barber-roll 1.8s linear infinite;
     will-change: background-position;
   }
-  /* Loop perfecto: el período del patrón es 56px en y. */
   @keyframes barber-roll {
-    from { background-position: 0 56px; }
-    to   { background-position: 0 0; }
+    from { background-position: 0 0; }
+    to   { background-position: 0 56px; }
   }
 
-  /* Brillo de vidrio sobre las rayas (luz reflejada del frente) */
+  /* Sombreado cilíndrico (oscuro en bordes, claro en el centro) */
   .pole-shine {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(90deg,
-        rgba(0,0,0,0.45) 0%,
-        rgba(0,0,0,0.1) 18%,
-        rgba(255,255,255,0.15) 38%,
-        rgba(255,255,255,0.22) 50%,
-        rgba(255,255,255,0.15) 62%,
-        rgba(0,0,0,0.1) 82%,
-        rgba(0,0,0,0.45) 100%);
     pointer-events: none;
-    mix-blend-mode: overlay;
+    background:
+      /* Reflejo de vidrio en una franja vertical */
+      linear-gradient(90deg,
+        transparent 15%,
+        rgba(255,255,255,0.18) 22%,
+        rgba(255,255,255,0.32) 28%,
+        rgba(255,255,255,0.18) 34%,
+        transparent 42%),
+      /* Oscurecimiento en los bordes laterales para curvatura */
+      linear-gradient(90deg,
+        rgba(0,0,0,0.7) 0%,
+        rgba(0,0,0,0.25) 15%,
+        rgba(0,0,0,0) 35%,
+        rgba(0,0,0,0) 65%,
+        rgba(0,0,0,0.25) 85%,
+        rgba(0,0,0,0.7) 100%);
   }
   .hero-circle {
     position: absolute;

@@ -5,6 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Barbería Distrito en Bogotá. Cortes clásicos, modernos y arreglo de barba. Agenda por WhatsApp." />
 <meta name="theme-color" content="#0f0f0f" />
+
+<!-- ===== SEGURIDAD ===== -->
+<!-- CSP: bloquea scripts/iframes/imágenes de orígenes no aprobados -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https://image.pollinations.ai;
+  frame-src https://maps.google.com https://www.google.com;
+  connect-src 'self';
+  form-action 'self' https://wa.me;
+  base-uri 'self';
+  object-src 'none';
+  frame-ancestors 'none';
+  upgrade-insecure-requests
+">
+<!-- No filtra la URL completa a sitios externos cuando el usuario hace click -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- Bloquea acceso a APIs sensibles del navegador -->
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
+<!-- No permite que el navegador adivine tipos MIME (evita drive-by) -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
 <title>Barbería Distrito · Bogotá</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1040,7 +1063,7 @@
         Sin prisas, sin filas — agendá tu turno y llegá listo.
       </p>
       <div class="hero-cta">
-        <a class="btn btn-wa" href="https://wa.me/573001234567?text=Hola%20Barber%C3%ADa%20Distrito%2C%20quiero%20agendar%20un%20turno" target="_blank" rel="noopener">
+        <a class="btn btn-wa" href="https://wa.me/573001234567?text=Hola%20Barber%C3%ADa%20Distrito%2C%20quiero%20agendar%20un%20turno" target="_blank" rel="noopener noreferrer">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-.9-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
           Agendar por WhatsApp
         </a>
@@ -1312,15 +1335,20 @@
       <div class="book-card">
         <h3>Pedir turno</h3>
         <p>Te respondemos al WhatsApp con la confirmación.</p>
-        <form id="bookForm">
+        <form id="bookForm" autocomplete="on" novalidate>
+          <!-- Honeypot: invisible para humanos, los bots lo llenan y los descartamos -->
+          <input type="text" name="website" id="website_hp" tabindex="-1" autocomplete="off"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true"/>
           <div class="form-row">
             <div class="field">
               <label for="name">Nombre</label>
-              <input type="text" id="name" required placeholder="Tu nombre"/>
+              <input type="text" id="name" required placeholder="Tu nombre"
+                     autocomplete="name" maxlength="60" pattern="[A-Za-zÀ-ÿ\s'.-]{2,60}"/>
             </div>
             <div class="field">
               <label for="phone">Celular</label>
-              <input type="tel" id="phone" required placeholder="3001234567"/>
+              <input type="tel" id="phone" required placeholder="3001234567"
+                     autocomplete="tel" maxlength="15" pattern="[\d\s+()-]{7,15}"/>
             </div>
           </div>
           <div class="form-row">
@@ -1389,11 +1417,12 @@
           <iframe
             title="Mapa Barbería Distrito"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            referrerpolicy="no-referrer"
             src="https://maps.google.com/maps?q=Centro%20Comercial%20Andino%2C%20Cra.%2011%20%2382-71%2C%20Bogot%C3%A1&t=&z=16&ie=UTF8&iwloc=&output=embed">
           </iframe>
         </div>
-        <a href="https://maps.google.com/?q=Centro+Comercial+Andino+Bogota" target="_blank" rel="noopener"
+        <a href="https://maps.google.com/?q=Centro+Comercial+Andino+Bogota" target="_blank" rel="noopener noreferrer"
            style="display:inline-flex; align-items:center; gap:8px; margin-top:14px; font-size:13px; color:var(--gold);">
           Abrir en Google Maps
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -1546,10 +1575,19 @@
       <span class="eyebrow">Club Distrito</span>
       <h2 style="margin-top:14px;">Sumate al club</h2>
       <p>Dejá tu correo y recibí promos exclusivas, avisos cuando entra un barbero nuevo y un 15% off en tu primer corte.</p>
-      <form id="newsForm" class="news-form" novalidate>
-        <input type="email" id="newsEmail" placeholder="tu@correo.com" required aria-label="Tu correo electrónico"/>
+      <form id="newsForm" class="news-form" novalidate autocomplete="on">
+        <!-- Honeypot anti-bot -->
+        <input type="text" name="company" id="company_hp" tabindex="-1" autocomplete="off"
+               style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true"/>
+        <input type="email" id="newsEmail" placeholder="tu@correo.com" required
+               aria-label="Tu correo electrónico" autocomplete="email" maxlength="120"
+               pattern="[^\s@]+@[^\s@]+\.[^\s@]+"/>
         <button type="submit">Suscribirme</button>
       </form>
+      <p style="font-size:11px; color:var(--ink-dim); margin-top:14px; max-width:420px; margin-left:auto; margin-right:auto;">
+        Al suscribirte aceptás recibir correos comerciales. No compartimos tu dato.
+        Podés darte de baja en cualquier momento. <a href="#" style="color:var(--gold); text-decoration:underline;">Política de tratamiento de datos (Ley 1581)</a>
+      </p>
       <div id="newsSuccess" class="news-success">
         ✓ ¡Listo! Te llegará un correo con tu cupón en breve.
       </div>
@@ -1589,7 +1627,7 @@
 </footer>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/573001234567?text=Hola%20Barber%C3%ADa%20Distrito" class="fab" aria-label="WhatsApp" target="_blank" rel="noopener">
+<a href="https://wa.me/573001234567?text=Hola%20Barber%C3%ADa%20Distrito" class="fab" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-.9-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
 </a>
 
@@ -1601,25 +1639,60 @@
   const toast = document.getElementById('toast');
   const BARBERIA_PHONE = '573001234567'; // cambiar por el real
 
+  // sanitizer básico: corta longitud y remueve caracteres peligrosos para URLs/messengers
+  const clean = (s, max = 200) =>
+    String(s || '')
+      .slice(0, max)
+      .replace(/[<>{}\\]/g, '')
+      .trim();
+
+  // rate limit cliente: máximo 1 submit cada 8 segundos
+  let lastSubmit = 0;
+  const RATE_MS = 8000;
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const name    = document.getElementById('name').value.trim();
-    const phone   = document.getElementById('phone').value.trim();
-    const service = document.getElementById('service').value;
-    const date    = document.getElementById('date').value.trim();
-    const notes   = document.getElementById('notes').value.trim();
 
-    const msg =
-      `Hola Barbería Distrito! Quiero agendar un turno:%0A%0A` +
-      `*Nombre:* ${name}%0A` +
-      `*Celular:* ${phone}%0A` +
-      `*Servicio:* ${service}%0A` +
+    // Honeypot: si está lleno, lo llenó un bot. Fallamos en silencio.
+    if (document.getElementById('website_hp').value.trim() !== '') return;
+
+    // Rate limit
+    const now = Date.now();
+    if (now - lastSubmit < RATE_MS) {
+      toast.textContent = 'Esperá unos segundos antes de reenviar.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+      return;
+    }
+    lastSubmit = now;
+
+    const name    = clean(document.getElementById('name').value, 60);
+    const phone   = clean(document.getElementById('phone').value, 15);
+    const service = clean(document.getElementById('service').value, 80);
+    const date    = clean(document.getElementById('date').value, 50);
+    const notes   = clean(document.getElementById('notes').value, 300);
+
+    // Validación mínima
+    if (!name || !phone || !service || !date) {
+      toast.textContent = 'Completá nombre, teléfono, servicio y horario.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+      return;
+    }
+
+    const msg = encodeURIComponent(
+      `Hola Barbería Distrito! Quiero agendar un turno:\n\n` +
+      `*Nombre:* ${name}\n` +
+      `*Celular:* ${phone}\n` +
+      `*Servicio:* ${service}\n` +
       `*Día/hora:* ${date}` +
-      (notes ? `%0A*Notas:* ${notes}` : '');
+      (notes ? `\n*Notas:* ${notes}` : '')
+    );
 
+    toast.textContent = 'Abriendo WhatsApp…';
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2000);
-    window.open(`https://wa.me/${BARBERIA_PHONE}?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${BARBERIA_PHONE}?text=${msg}`, '_blank', 'noopener,noreferrer');
   });
 
   // ----- Newsletter (Club Distrito) -----
@@ -1640,8 +1713,13 @@
 
   newsForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const email = newsEmail.value.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    // Honeypot
+    if (document.getElementById('company_hp').value.trim() !== '') return;
+
+    const email = newsEmail.value.trim().slice(0, 120);
+    // RFC-ish, suficiente para uso real
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 
     if (!isValid) {
       newsEmail.style.borderColor = '#c0392b';

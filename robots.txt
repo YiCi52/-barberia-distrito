@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yici52.github.io/-barberia-distrito/sitemap.xml
